@@ -25,20 +25,20 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/:date?", function (req, res) {
-  let date = req.params.date;
-  let unixDate = parseInt(date);
-  let utcDate = new Date(date);
-  
-  if (isNaN(unixDate)) {
-    if (isNaN(Date.parse(utcDate))) {
-      res.json({ error: "Invalid Date" });
-    } else {
-      res.json({ unix: utcDate.getTime(), utc: utcDate.toUTCString() });
-    }
+  let date = req.params.date.split("-");
+  let dateStr = date.join(" ");
+  let dateObj = new Date(dateStr);
+  let unix = dateObj.getTime();
+  let utc = dateObj.toUTCString();
+  if (dateObj == "Invalid Date") {
+    res.json({error: "Invalid Date"});
   } else {
-    let date = new Date(unixDate);
-    res.json({ unix: date.getTime(), utc: date.toUTCString() });
+    res.json({unix: unix, utc: utc});
   }
+})
+
+app.get("/api/:num", function (req, res) {
+
 })
 
 
